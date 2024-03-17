@@ -12,7 +12,7 @@ function Game() {
     {
       id: "move#0",
       move: 0,
-      board: Array.from(Array(10), (x) => Array(10).fill(null)),
+      squares: Array.from(Array(10), (x) => Array(10).fill(null)),
       xIsNext: true,
       order: "game start",
     },
@@ -103,15 +103,19 @@ function Game() {
 
   //Handle player
   const handleClick = (i, j) => {
-    const newSquares = squares.slice();
-    if (newSquares[i][j] || winner) return;
-    newSquares[i][j] = xIsNext ? "X" : "O";
+    if (winner || squares[i][j]) return;
+    const newSquares = squares.map((row, rowNum) =>
+      row.map((col, colNum) => {
+        return i === rowNum && j === colNum ? (xIsNext ? "X" : "O") : col;
+      })
+    );
+
     setXIsNext((turn) => !turn);
     setSquares(newSquares);
     const newMove = {
       id: Date.now(),
       move: currentMove + 1,
-      board: JSON.stringify(newSquares),
+      squares: newSquares,
       xIsNext: !xIsNext,
       order: `move #${currentMove + 1}`,
     };
@@ -127,7 +131,7 @@ function Game() {
     setHistory([
       {
         move: 0,
-        board: Array.from(Array(10), (x) => Array(10).fill(null)),
+        squares: Array.from(Array(10), (x) => Array(10).fill(null)),
         xIsNext: true,
         order: "game start",
       },
@@ -137,7 +141,7 @@ function Game() {
   const undo = (id) => {
     history.forEach((item) => {
       if (id === item.id) {
-        setSquares(item.move ? JSON.parse(item.board) : item.board);
+        setSquares(item.squares);
         setXIsNext(item.xIsNext);
         setCurrentMove(item.move);
       }
