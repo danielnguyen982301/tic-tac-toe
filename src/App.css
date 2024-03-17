@@ -29,9 +29,8 @@ body {
 
 .game {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .result {
@@ -109,4 +108,8 @@ body {
   cursor: pointer;
   border: 1px solid #3787ce;
   border-radius: 4px;
+}
+
+.history {
+  margin-left: 20px;
 }
