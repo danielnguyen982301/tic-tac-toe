@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Board from "./Board";
+import History from "./History";
 
 function Game() {
   const [squares, setSquares] = useState(Array(9).fill(null));
@@ -92,22 +93,12 @@ function Game() {
   return (
     <div className="main">
       <h2 className="result">Winner is: {winner ? winner : "N/N"}</h2>
+      <span className="player">Next player is: {xIsNext ? "X" : "O"}</span>
       <div className="game">
-        <span className="player">Next player is: {xIsNext ? "X" : "O"}</span>
         <Board squares={squares} handleClick={handleClick} />
+        <History history={history} undo={undo} />
       </div>
-      <div className="history">
-        <h4>History</h4>
-        <ul>
-          {history.map((item) => (
-            <li>
-              <button onClick={() => undo(item.move)}>
-                Go to {item.order}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
+
       <button onClick={handlRestart} className="restart-btn">
         Restart
       </button>
