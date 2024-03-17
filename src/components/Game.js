@@ -5,10 +5,19 @@ function Game() {
   const [squares, setSquares] = useState(Array(9).fill(null));
   const [xIsNext, setXIsNext] = useState(true);
   const [winner, setWinner] = useState(null);
+  const [currentMove, setCurrentMove] = useState(0);
+  const [history, setHistory] = useState([
+    {
+      move: 0,
+      squares: Array(9).fill(null),
+      xIsNext: true,
+      order: "game start",
+    },
+  ]);
 
   //Declaring a Winner
   useEffect(() => {
-    "Your code here";
+    setWinner(calculateWinner(squares));
   }, [squares]);
 
   //function to check if a player has won.
@@ -40,12 +49,44 @@ function Game() {
 
   //Handle player
   const handleClick = (i) => {
-    "Your code here";
+    const newSquares = squares.slice();
+    if (newSquares[i] || winner) return;
+    newSquares[i] = xIsNext ? "X" : "O";
+    setSquares(newSquares);
+    setXIsNext((turn) => !turn);
+    const newMove = {
+      move: currentMove + 1,
+      squares: newSquares,
+      xIsNext: !xIsNext,
+      order: `move #${currentMove + 1}`,
+    };
+    setCurrentMove(currentMove + 1);
+    setHistory([...history.slice(0, currentMove + 1), newMove]);
   };
 
   //Restart game
   const handlRestart = () => {
-    "Your code here";
+    setSquares(Array(9).fill(null));
+    setXIsNext(true);
+    setCurrentMove(0);
+    setHistory([
+      {
+        move: 0,
+        squares: Array(9).fill(null),
+        xIsNext: true,
+        order: "game start",
+      },
+    ]);
+  };
+
+  const undo = (move) => {
+    history.forEach((item) => {
+      if (move === item.move) {
+        setSquares(item.squares);
+        setXIsNext(item.xIsNext);
+        setCurrentMove(item.move);
+      }
+    });
   };
 
   return (
@@ -53,9 +94,21 @@ function Game() {
       <h2 className="result">Winner is: {winner ? winner : "N/N"}</h2>
       <div className="game">
         <span className="player">Next player is: {xIsNext ? "X" : "O"}</span>
-        <Board squares={"Your code here"} handleClick={"Your code here"} />
+        <Board squares={squares} handleClick={handleClick} />
       </div>
-      <button onClick={"Your code here"} className="restart-btn">
+      <div className="history">
+        <h4>History</h4>
+        <ul>
+          {history.map((item) => (
+            <li>
+              <button onClick={() => undo(item.move)}>
+                Go to {item.order}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <button onClick={handlRestart} className="restart-btn">
         Restart
       </button>
     </div>
