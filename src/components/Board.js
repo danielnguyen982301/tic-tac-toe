@@ -9,6 +9,7 @@ export default function Board({ squares, handleClick }) {
             {row.map((col, j) => (
               <Square
                 key={`row-${i} col-${j}`}
+                btnId={`row-${i} col-${j}`}
                 square={col}
                 handleClick={() => handleClick(i, j)}
               />

@@ -113,3 +113,7 @@ body {
 .history {
   margin-left: 20px;
 }
+
+.win-square {
+  background-color: yellow;
+}
