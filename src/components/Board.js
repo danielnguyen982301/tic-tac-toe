@@ -5,9 +5,13 @@ export default function Board({ squares, handleClick }) {
     <div className="board">
       <div>
         {squares.map((row, i) => (
-          <div>
+          <div key={`row-${i}`}>
             {row.map((col, j) => (
-              <Square square={col} handleClick={() => handleClick(i, j)} />
+              <Square
+                key={`row-${i} col-${j}`}
+                square={col}
+                handleClick={() => handleClick(i, j)}
+              />
             ))}
           </div>
         ))}

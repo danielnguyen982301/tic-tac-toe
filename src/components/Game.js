@@ -10,8 +10,9 @@ function Game() {
   const [currentMove, setCurrentMove] = useState(0);
   const [history, setHistory] = useState([
     {
+      id: "move#0",
       move: 0,
-      squares: Array.from(Array(10), (x) => Array(10).fill(null)),
+      board: Array.from(Array(10), (x) => Array(10).fill(null)),
       xIsNext: true,
       order: "game start",
     },
@@ -102,18 +103,15 @@ function Game() {
 
   //Handle player
   const handleClick = (i, j) => {
-    if (squares[i][j] || winner) return;
-    if (xIsNext) {
-      squares[i][j] = "X";
-      setXIsNext(false);
-    } else {
-      squares[i][j] = "O";
-      setXIsNext(true);
-    }
-    setSquares([...squares]);
+    const newSquares = squares.slice();
+    if (newSquares[i][j] || winner) return;
+    newSquares[i][j] = xIsNext ? "X" : "O";
+    setXIsNext((turn) => !turn);
+    setSquares(newSquares);
     const newMove = {
+      id: Date.now(),
       move: currentMove + 1,
-      squares: JSON.stringify(squares),
+      board: JSON.stringify(newSquares),
       xIsNext: !xIsNext,
       order: `move #${currentMove + 1}`,
     };
@@ -125,22 +123,21 @@ function Game() {
   const handlRestart = () => {
     setSquares(Array.from(Array(10), (x) => Array(10).fill(null)));
     setXIsNext(true);
-    setWinner(null);
     setCurrentMove(0);
     setHistory([
       {
         move: 0,
-        squares: Array.from(Array(10), (x) => Array(10).fill(null)),
+        board: Array.from(Array(10), (x) => Array(10).fill(null)),
         xIsNext: true,
         order: "game start",
       },
     ]);
   };
 
-  const undo = (move) => {
+  const undo = (id) => {
     history.forEach((item) => {
-      if (move === item.move) {
-        setSquares(move ? JSON.parse(item.squares) : item.squares);
+      if (id === item.id) {
+        setSquares(item.move ? JSON.parse(item.board) : item.board);
         setXIsNext(item.xIsNext);
         setCurrentMove(item.move);
       }
@@ -157,8 +154,8 @@ function Game() {
           <h4>History</h4>
           <ul>
             {history.map((item) => (
-              <li>
-                <button onClick={() => undo(item.move)}>
+              <li key={item.id}>
+                <button onClick={() => undo(item.id)}>
                   Go to {item.order}
                 </button>
               </li>
