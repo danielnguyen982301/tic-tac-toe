@@ -1,10 +1,10 @@
-# 10 x 10 table solution
-
+---
 author: Dua Tran
 title: Rock-Paper-Scissor game
 id: tic-tac-toe_game_trancaodua
-
 ---
+
+# 15 x 15 table solution
 
 # Tic Tac Toe Game
 

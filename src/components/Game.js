@@ -4,7 +4,7 @@ import History from "./History";
 
 function Game() {
   const [squares, setSquares] = useState(
-    Array.from(Array(10), (x) => Array(10).fill(null))
+    Array.from(Array(15), (x) => Array(15).fill(null))
   );
   const [xIsNext, setXIsNext] = useState(true);
   const [winner, setWinner] = useState(null);
@@ -14,7 +14,7 @@ function Game() {
     {
       id: "move#0",
       move: 0,
-      squares: Array.from(Array(10), (x) => Array(10).fill(null)),
+      squares: Array.from(Array(15), (x) => Array(15).fill(null)),
       xIsNext: true,
       order: "game start",
     },
@@ -194,13 +194,13 @@ function Game() {
 
   //Restart game
   const handlRestart = () => {
-    setSquares(Array.from(Array(10), (x) => Array(10).fill(null)));
+    setSquares(Array.from(Array(15), (x) => Array(15).fill(null)));
     setXIsNext(true);
     setCurrentMove(0);
     setHistory([
       {
         move: 0,
-        squares: Array.from(Array(10), (x) => Array(10).fill(null)),
+        squares: Array.from(Array(15), (x) => Array(15).fill(null)),
         xIsNext: true,
         order: "game start",
       },
